@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private CharacterController controller;
-    private Vector3 playerVelocity;
     [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float rotationSpeed = 2.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -18,15 +18,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        float move = Input.GetAxis("Vertical");
+        float rotation = Input.GetAxis("Horizontal");
 
-        if (move != Vector3.zero)
+        transform.Translate(Vector3.forward * move * playerSpeed * Time.deltaTime);
+
+        if (rotation != 0.0f)
         {
-            gameObject.transform.forward = move;
-        }
-
-        controller.Move(playerVelocity * Time.deltaTime);
+            //gameObject.transform.forward = move;
+            transform.Rotate(Vector3.up, rotation * rotationSpeed);
+        }        
     }
 
 }
