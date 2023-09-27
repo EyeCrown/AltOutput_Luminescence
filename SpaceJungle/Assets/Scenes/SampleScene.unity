@@ -3303,6 +3303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 2
+  rotationSpeed: 0.8
 --- !u!1001 &1880324647
 PrefabInstance:
   m_ObjectHideFlags: 0
