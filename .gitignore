@@ -50,3 +50,5 @@ ExportedObj/
 *.mdb.meta
 
 /[Ll]ibrary/
+SpaceJungle/Library/*
+SpaceJungle/Logs/*
