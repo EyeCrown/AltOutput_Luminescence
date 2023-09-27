@@ -22,7 +22,6 @@ ipch/
 *.vstemplate
 *.vsz
 *.sln.docstates
-/SpaceJungle/[Ll]ibrary/*
 # Ignore all compiled object files, executables, and libraries
 *.obj
 *.pdb
@@ -49,3 +48,5 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
+
+/[Ll]ibrary/
