@@ -56,6 +56,8 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Scale: 0
+    - _Speed: 0.1
     m_Colors:
-    - _Albedo: {r: 0, g: 0, b: 0, a: 0}
+    - _Albedo: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
