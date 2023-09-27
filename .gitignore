@@ -22,7 +22,7 @@ ipch/
 *.vstemplate
 *.vsz
 *.sln.docstates
-SpaceJungle/Library/
+/SpaceJungle/[Ll]ibrary/*
 # Ignore all compiled object files, executables, and libraries
 *.obj
 *.pdb
