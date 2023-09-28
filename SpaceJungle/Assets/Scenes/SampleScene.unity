@@ -756,8 +756,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -75}
-  m_SizeDelta: {x: 1920, y: 150}
+  m_AnchoredPosition: {x: 0, y: -280}
+  m_SizeDelta: {x: 1920, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &571170981
 MonoBehaviour:
@@ -1222,13 +1222,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.056692794, y: 0, z: 0, w: 0.99839175}
+  m_LocalRotation: {x: 0.033567682, y: -0, z: -0, w: 0.9994365}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1869738752}
-  m_LocalEulerAnglesHint: {x: 6.5, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.847, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1994,6 +1994,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 2
   rotationSpeed: 0.8
+  canvas: {fileID: 1967350905}
+  topBorder: {fileID: 571170979}
+  topBorderMax: 125
+  speedOpening: 0.5
 --- !u!1001 &1960017076
 PrefabInstance:
   m_ObjectHideFlags: 0
