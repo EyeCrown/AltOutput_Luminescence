@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -7,6 +8,12 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float rotationSpeed = 2.0f;
+
+    // Camera
+    [SerializeField] private Camera cam;
+    private float rotAroundX, rotAroundY;
+    [SerializeField] private float minRotationY;
+    [SerializeField] private float maxRotationY;
     bool canMove = false;
 
     // CANVAS
@@ -39,6 +46,10 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
 
+        cam = transform.GetChild(0).GetComponent<Camera>();
+        rotAroundX = transform.eulerAngles.x;
+        rotAroundY = transform.eulerAngles.y;
+
         // Init sas opening
         if (canvas == null)
             Debug.Log("error : no canvas for player");
@@ -54,16 +65,23 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove)
         {
+            Vector3 movements = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")*(-1)).normalized;
             float move = Input.GetAxis("Vertical");
-            float rotation = Input.GetAxis("Horizontal");
+            //Vector3 rotations = new Vector3(Input.GetAxis("HorizontalCamera"), 0.0f, Input.GetAxis("VerticalCamera")).normalized;
+            
 
-            transform.Translate(Vector3.forward * move * playerSpeed * Time.deltaTime);
+            rotAroundX += Input.GetAxis("VerticalCamera") * rotationSpeed;
+            rotAroundY += Input.GetAxis("HorizontalCamera") * rotationSpeed;
 
-            if (rotation != 0.0f)
-            {
-                //gameObject.transform.forward = move;
-                transform.Rotate(Vector3.up, rotation * rotationSpeed);
-            }
+            rotAroundX = Mathf.Clamp(rotAroundY, minRotationY, maxRotationY);
+
+
+            transform.Translate(playerSpeed * Time.deltaTime * movements);
+
+            transform.rotation = Quaternion.Euler(0, rotAroundY, 0); 
+            cam.transform.rotation = Quaternion.Euler(-rotAroundX, rotAroundY, 0); 
+
+            
         }
     }
 
