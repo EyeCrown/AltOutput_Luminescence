@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator sasCoroutine()
     {
         float dist = 0;
-        while (dist < 0.45f)
+        while (dist < 0.22f)
         {
             topBorder.GetComponent<RectTransform>().position += new Vector3(0,
                  Time.deltaTime * speedOpening, 0);
@@ -32,6 +32,14 @@ public class PlayerController : MonoBehaviour
             yield return null;
         };
         yield return new WaitForSeconds(.5f);
+        while (dist < 0.45f)
+        {
+            topBorder.GetComponent<RectTransform>().position += new Vector3(0,
+                 Time.deltaTime * speedOpening/2, 0);
+            dist += Time.deltaTime * speedOpening/2;
+
+            yield return null;
+        };
         canMove = true;
     }
 
@@ -45,6 +53,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             StartCoroutine(sasCoroutine());
+            
         }
     }
 
