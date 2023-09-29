@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     // Camera
     [SerializeField] private Camera cam;
     private float rotAroundX, rotAroundY;
+    [SerializeField] private float minRotationX;
+    [SerializeField] private float maxRotationX;
     [SerializeField] private float minRotationY;
     [SerializeField] private float maxRotationY;
     bool canMove = false;
@@ -59,28 +61,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
     void Update()
     {
         if (canMove)
         {
+            // Get player's movements 
             Vector3 movements = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")*(-1)).normalized;
-            float move = Input.GetAxis("Vertical");
-            //Vector3 rotations = new Vector3(Input.GetAxis("HorizontalCamera"), 0.0f, Input.GetAxis("VerticalCamera")).normalized;
             
+            rotAroundX += Input.GetAxis("VerticalCamera") * rotationSpeed; // rotate around x-axis
+            rotAroundY += Input.GetAxis("HorizontalCamera") * rotationSpeed; // rotate around y-axis
 
-            rotAroundX += Input.GetAxis("VerticalCamera") * rotationSpeed;
-            rotAroundY += Input.GetAxis("HorizontalCamera") * rotationSpeed;
-
-            rotAroundX = Mathf.Clamp(rotAroundY, minRotationY, maxRotationY);
-
+            rotAroundX = Mathf.Clamp(rotAroundX, minRotationX, maxRotationX);
+            //rotAroundY = Mathf.Clamp(rotAroundY, minRotationY, maxRotationY);
 
             transform.Translate(playerSpeed * Time.deltaTime * movements);
 
             transform.rotation = Quaternion.Euler(0, rotAroundY, 0); 
             cam.transform.rotation = Quaternion.Euler(-rotAroundX, rotAroundY, 0); 
-
             
         }
     }
