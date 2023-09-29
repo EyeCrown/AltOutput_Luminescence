@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -7,6 +8,14 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float rotationSpeed = 2.0f;
+
+    // Camera
+    [SerializeField] private Camera cam;
+    private float rotAroundX, rotAroundY;
+    private float minRotationX = -10.0f;
+    private float maxRotationX = 15.0f;
+    //private float minRotationY;
+    //private float maxRotationY;
     bool canMove = false;
 
     // CANVAS
@@ -47,6 +56,10 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
 
+        cam = transform.GetChild(0).GetComponent<Camera>();
+        rotAroundX = transform.eulerAngles.x;
+        rotAroundY = transform.eulerAngles.y;
+
         // Init sas opening
         if (canvas == null)
             Debug.Log("error : no canvas for player");
@@ -57,22 +70,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
     void Update()
     {
         if (canMove)
         {
-            float move = Input.GetAxis("Vertical");
-            float rotation = Input.GetAxis("Horizontal");
+            // Get player's movements 
+            Vector3 movements = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")*(-1)).normalized;
+            
+            rotAroundX += Input.GetAxis("VerticalCamera") * rotationSpeed; // rotate around x-axis
+            rotAroundY += Input.GetAxis("HorizontalCamera") * rotationSpeed; // rotate around y-axis
 
-            transform.Translate(Vector3.forward * move * playerSpeed * Time.deltaTime);
+            rotAroundX = Mathf.Clamp(rotAroundX, minRotationX, maxRotationX);
+            //rotAroundY = Mathf.Clamp(rotAroundY, minRotationY, maxRotationY);
 
-            if (rotation != 0.0f)
-            {
-                //gameObject.transform.forward = move;
-                transform.Rotate(Vector3.up, rotation * rotationSpeed);
-            }
+            transform.Translate(playerSpeed * Time.deltaTime * movements);
+
+            transform.rotation = Quaternion.Euler(0, rotAroundY, 0); 
+            cam.transform.rotation = Quaternion.Euler(-rotAroundX, rotAroundY, 0); 
+            
         }
     }
 
