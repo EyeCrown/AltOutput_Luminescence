@@ -12,10 +12,10 @@ public class PlayerController : MonoBehaviour
     // Camera
     [SerializeField] private Camera cam;
     private float rotAroundX, rotAroundY;
-    [SerializeField] private float minRotationX;
-    [SerializeField] private float maxRotationX;
-    [SerializeField] private float minRotationY;
-    [SerializeField] private float maxRotationY;
+    private float minRotationX = -10.0f;
+    private float maxRotationX = 15.0f;
+    //private float minRotationY;
+    //private float maxRotationY;
     bool canMove = false;
 
     // CANVAS
