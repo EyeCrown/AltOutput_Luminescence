@@ -25,6 +25,13 @@ public class PlayerController : MonoBehaviour
     public int topBorderMax = 125;
     public float speedOpening = 0.5f;
 
+    [Header("Player footsteps")]
+    [SerializeField] List<AudioClip> FootstepsLeafs;
+    [SerializeField] List<AudioClip> FootstepsCave;
+    [SerializeField] public bool isInCave = false;
+    private AudioSource m_footsteps_audioSource;
+    float timerFoosteps = 0.0f;
+
     /// <summary>
     /// Open sas
     /// </summary>
@@ -44,8 +51,8 @@ public class PlayerController : MonoBehaviour
         while (dist < 0.45f)
         {
             topBorder.GetComponent<RectTransform>().position += new Vector3(0,
-                 Time.deltaTime * speedOpening/2, 0);
-            dist += Time.deltaTime * speedOpening/2;
+                 Time.deltaTime * speedOpening / 2, 0);
+            dist += Time.deltaTime * speedOpening / 2;
 
             yield return null;
         };
@@ -55,7 +62,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
+        m_footsteps_audioSource = GetComponent<AudioSource>();
         cam = transform.GetChild(0).GetComponent<Camera>();
         rotAroundX = transform.eulerAngles.x;
         rotAroundY = transform.eulerAngles.y;
@@ -66,8 +73,12 @@ public class PlayerController : MonoBehaviour
         else
         {
             StartCoroutine(sasCoroutine());
-            
         }
+    }
+
+    public void ChangeFootstepsSounds()
+    {
+        isInCave = !isInCave;
     }
 
     void Update()
@@ -75,8 +86,29 @@ public class PlayerController : MonoBehaviour
         if (canMove)
         {
             // Get player's movements 
-            Vector3 movements = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")*(-1)).normalized;
-            
+            Vector3 movements = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical") * (-1)).normalized;
+
+
+            // Play footsteps sounds
+            if (movements != Vector3.zero)
+            {
+                timerFoosteps += Time.deltaTime;
+                if (timerFoosteps >= 0.6f)
+                {
+
+                    if (isInCave)
+                    {
+                        m_footsteps_audioSource.clip = FootstepsCave[Random.Range(0, FootstepsCave.Count)];
+                    }
+                    else
+                    {
+                        m_footsteps_audioSource.clip = FootstepsLeafs[Random.Range(0, FootstepsLeafs.Count)];
+                    }
+                    m_footsteps_audioSource.Play();
+                    timerFoosteps = 0.0f;
+                }
+            }
+
             rotAroundX += Input.GetAxis("VerticalCamera") * rotationSpeed; // rotate around x-axis
             rotAroundY += Input.GetAxis("HorizontalCamera") * rotationSpeed; // rotate around y-axis
 
@@ -85,9 +117,9 @@ public class PlayerController : MonoBehaviour
 
             transform.Translate(playerSpeed * Time.deltaTime * movements);
 
-            transform.rotation = Quaternion.Euler(0, rotAroundY, 0); 
-            cam.transform.rotation = Quaternion.Euler(-rotAroundX, rotAroundY, 0); 
-            
+            transform.rotation = Quaternion.Euler(0, rotAroundY, 0);
+            cam.transform.rotation = Quaternion.Euler(-rotAroundX, rotAroundY, 0);
+
         }
     }
 
