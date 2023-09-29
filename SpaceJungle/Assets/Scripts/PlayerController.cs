@@ -6,8 +6,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private CharacterController controller;
-    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float playerSpeed = 200.0f;
     [SerializeField] private float rotationSpeed = 2.0f;
+    Rigidbody rb;
 
     // Camera
     [SerializeField] private Camera cam;
@@ -61,7 +62,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
         m_footsteps_audioSource = GetComponent<AudioSource>();
         cam = transform.GetChild(0).GetComponent<Camera>();
         rotAroundX = transform.eulerAngles.x;
@@ -74,6 +74,9 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(sasCoroutine());
         }
+        rb = GetComponent<Rigidbody>();
+        rb.detectCollisions = true;
+        
     }
 
     public void ChangeFootstepsSounds()
@@ -84,11 +87,18 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (canMove)
-        {
+        {   
+            // rotation
+            rotAroundX += Input.GetAxis("VerticalCamera") * rotationSpeed; // rotate around x-axis
+            rotAroundY += Input.GetAxis("HorizontalCamera") * rotationSpeed; // rotate around y-axis
+
+            rotAroundX = Mathf.Clamp(rotAroundX, minRotationX, maxRotationX);
+            //rotAroundY = Mathf.Clamp(rotAroundY, minRotationY, maxRotationY);
+
             // Get player's movements 
-            Vector3 movements = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical") * (-1)).normalized;
+            Vector3 movements = new Vector3(Input.GetAxis("Horizontal") , 0.0f, Input.GetAxis("Vertical") * -1).normalized;
 
-
+            
             // Play footsteps sounds
             if (movements != Vector3.zero)
             {
@@ -109,18 +119,15 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            rotAroundX += Input.GetAxis("VerticalCamera") * rotationSpeed; // rotate around x-axis
-            rotAroundY += Input.GetAxis("HorizontalCamera") * rotationSpeed; // rotate around y-axis
 
-            rotAroundX = Mathf.Clamp(rotAroundX, minRotationX, maxRotationX);
-            //rotAroundY = Mathf.Clamp(rotAroundY, minRotationY, maxRotationY);
-
-            transform.Translate(playerSpeed * Time.deltaTime * movements);
+            //deplacement
+            movements = Quaternion.AngleAxis(transform.rotation.eulerAngles.y, Vector3.up) * movements;
+            rb.velocity = new Vector3(movements.x, 0, movements.z) * playerSpeed;
+            //transform.Translate(playerSpeed * Time.deltaTime * movements);
 
             transform.rotation = Quaternion.Euler(0, rotAroundY, 0);
             cam.transform.rotation = Quaternion.Euler(-rotAroundX, rotAroundY, 0);
 
         }
     }
-
 }

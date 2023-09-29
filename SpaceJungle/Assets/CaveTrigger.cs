@@ -15,6 +15,7 @@ public class CaveTrigger : MonoBehaviour
             if (!enter)
             {
                 creatureAnimator.SetTrigger("StartUp");
+                Debug.Log(soundCreature.clip.name);
                 soundCreature.Play();
             }
         }
