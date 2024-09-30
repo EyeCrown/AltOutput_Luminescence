@@ -9,6 +9,7 @@ This game was made in 3 and a half day during the Alternative Output Workshop at
 The game was made using Unity3D and use several LED panels as display.
 
 ---
+[Itch.io](https://eyecrown.itch.io/luminescence)
 
 [ShakeThatButton](https://shakethatbutton.com/luminescence/)
 
