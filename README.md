@@ -1,4 +1,4 @@
-# Luminescence
+# **Luminescence**
 
 ![Cover](Luminescence/img/cover.png)
 
